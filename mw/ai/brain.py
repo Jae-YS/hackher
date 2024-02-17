@@ -1,4 +1,5 @@
 import boto3
+import json
 from prompts import respond_prompt
 from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
@@ -35,7 +36,9 @@ def respond(user_input: str):
     
     conversation = ConversationChain(llm = llm, verbose=False, memory=memory)   
     conversation.prompt = gen_ideas_prompt1
-    return (conversation.predict(input=user_input))
+    data = {}
+    data['response'] = conversation.predict(input=user_input)
+    return json.dumps(data)
 
 def generate_stack(level: str, project: str):
     llm = Bedrock(
