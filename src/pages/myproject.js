@@ -4,13 +4,14 @@ import { subDays, subHours } from "date-fns";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
+import { Box, Button, Container, Stack, SvgIcon, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 import { Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
 import { useSelection } from "src/hooks/use-selection";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ProjectsTable } from "src/sections/myproject/projects-table";
 import { ProjectsSearch } from "src/sections/myproject/projects-search";
 import { applyPagination } from "src/utils/apply-pagination";
+import { OverviewTotalProfit } from '../sections/overview/overview-total-profit';
 
 const now = new Date();
 
@@ -127,19 +128,66 @@ const Page = () => {
               <Stack spacing={1}>
                 <Typography variant="h4">My Projects</Typography>
               </Stack>
-              <div>
+            </Stack>
+
+            <Grid
+              container
+              spacing={3}
+            >
+              <Grid
+                item // Make sure to include the item prop for consistency
+                xs={12}
+                sm={6}
+                lg={3}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} // This centers the button
+              >
                 <Button
                   startIcon={
-                    <SvgIcon fontSize="small">
+                    <SvgIcon 
+                      style={{ fontSize: '1.5rem' }} // Adjust the icon size as needed
+                      fontSize="small"
+                    >
                       <PlusIcon />
                     </SvgIcon>
                   }
                   variant="contained"
+                  style={{ height: '100%', width: '100%', maxWidth: 'none', fontSize: '1.25rem'}} // Adjust width and height as needed
                 >
                   Add
                 </Button>
-              </div>
-            </Stack>
+              </Grid>
+              <Grid
+                xs={12}
+                sm={6}
+                lg={3}
+              >
+                <OverviewTotalProfit
+                  sx={{ height: '100%' }}
+                  value="$15k"
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                sm={6}
+                lg={3}
+              >
+                <OverviewTotalProfit
+                  sx={{ height: '100%' }}
+                  value="$15k"
+                />
+              </Grid>
+              <Grid
+                xs={12}
+                sm={6}
+                lg={3}
+              >
+                <OverviewTotalProfit
+                  sx={{ height: '100%' }}
+                  value="$15k"
+                />
+              </Grid>
+            </Grid>
+
             <ProjectsSearch />
             <ProjectsTable
               count={data.length}
