@@ -1,5 +1,5 @@
 import boto3
-from prompts import idea_gen_prompt
+from prompts import respond_prompt
 from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
@@ -17,7 +17,7 @@ session = boto3.Session (
 	aws_session_token = aws_session_token
 )
 
-gen_ideas_prompt1 = PromptTemplate.from_template(idea_gen_prompt)
+gen_ideas_prompt1 = PromptTemplate.from_template(respond_prompt)
 
 bedrock = session.client('bedrock-runtime') 
 
@@ -27,13 +27,20 @@ contentType = 'application/json'
 
 memory = ConversationBufferMemory(ai_prefix="Assistant")
 
-def gen_ideas(user_input):
+def respond(user_input):
     llm = Bedrock(
-        model_id = modelId,
-        client = bedrock,
-        model_kwargs = {"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
+        model_id=modelId,
+        client=bedrock,
+        model_kwargs={"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
     )
     
     conversation = ConversationChain(llm = llm, verbose=False, memory=memory)   
     conversation.prompt = gen_ideas_prompt1
     return (conversation.predict(input=user_input))
+
+def respond_interests(user_input):
+    llm = Bedrock(
+        model_id=modelId,
+        client=bedrock,
+        model_kwargs={"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
+    )

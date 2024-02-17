@@ -1,8 +1,8 @@
-from brain import gen_ideas
+from brain import respond
 
 while True:
     user_question = input("\rType your response here: ") + "\n"
     if user_question == "quit\n":
         break
-    answer = gen_ideas(user_question)
+    answer = respond(user_question)
     print(answer)
