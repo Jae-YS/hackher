@@ -28,17 +28,17 @@ export const items = [
     ),
   },
   {
-    title: 'My Projects',
-    path: '/myproject',
+    title: "My Projects",
+    path: "/myproject",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
       </SvgIcon>
-    )
-  }, 
+    ),
+  },
   {
-    title: 'BlogPosts',
-    path: '/blogposts',
+    title: "BlogPosts",
+    path: "/blogposts",
 
     icon: (
       <SvgIcon fontSize="small">
