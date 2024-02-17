@@ -1,10 +1,11 @@
 import boto3
 import json
-from prompts import respond_prompt
+from prompts import respond_prompt, tech_stack_advisor
 from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.chains import ConversationChain
+
 
 region_name = "us-east-1" #us-east-1
 aws_access_key_id = "ASIA3CW6ONM4E7KVLKHB" #Paste the aws access key id here
@@ -18,6 +19,7 @@ session = boto3.Session (
 )
 
 gen_ideas_prompt1 = PromptTemplate.from_template(respond_prompt)
+
 
 bedrock = session.client('bedrock-runtime') 
 
@@ -40,13 +42,16 @@ def respond(user_input: str):
     data['response'] = conversation.predict(input=user_input)
     return json.dumps(data)
 
-def generate_stack(level: str, project: str):
+def generate_stack(input: str, level:str):
+    formatted = tech_stack_advisor.format(level=level, input=input)
+    print(formatted)
+    formatted = PromptTemplate.from_template(formatted)
     llm = Bedrock(
         model_id=modelId,
         client=bedrock,
-        model_kwargs={"max_tokens_to_sample": 1000, "temperature": 0.4, "top_k": 100, "top_p":100}
+        model_kwargs={"max_tokens_to_sample": 1000, "temperature": 0.4}
     )
-    
     conversation = ConversationChain(llm = llm, verbose=False)   
-    conversation.prompt = gen_ideas_prompt1
-    return (conversation.predict(project=project, level=level))
+    data = {}
+    data['response'] = conversation.predict(input=input)
+    return json.dumps(data)
