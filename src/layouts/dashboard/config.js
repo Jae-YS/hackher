@@ -27,9 +27,19 @@ export const items = [
       </SvgIcon>
     ),
   },
+  // {
+  //   title: 'Companies',
+  //   path: '/companies',
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <ShoppingBagIcon />
+  //     </SvgIcon>
+  //   )
+  // }, 
   {
-    title: "Companies",
-    path: "/companies",
+    title: 'BlogPosts',
+    path: '/blogposts',
+
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
