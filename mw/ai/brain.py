@@ -4,7 +4,6 @@ from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.chains import ConversationChain
-from urllib3 import disable_warnings
 
 region_name = "us-east-1" #us-east-1
 aws_access_key_id = "ASIA3CW6ONM4E7KVLKHB" #Paste the aws access key id here
@@ -31,16 +30,16 @@ def respond(user_input):
     llm = Bedrock(
         model_id=modelId,
         client=bedrock,
-        model_kwargs={"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
+        model_kwargs={"max_tokens_to_sample": 1500, "temperature": 0.6, "top_k": 250}
     )
     
     conversation = ConversationChain(llm = llm, verbose=False, memory=memory)   
     conversation.prompt = gen_ideas_prompt1
     return (conversation.predict(input=user_input))
 
-def respond_interests(user_input):
-    llm = Bedrock(
-        model_id=modelId,
-        client=bedrock,
-        model_kwargs={"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
-    )
+# def respond_interests(user_input):
+#     llm = Bedrock(
+#         model_id=modelId,
+#         client=bedrock,
+#         model_kwargs={"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
+#     )
