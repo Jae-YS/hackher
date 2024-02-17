@@ -20,12 +20,8 @@ export const ProjectsTable = (props) => {
   const {
     count = 0,
     items = [],
-    onDeselectAll,
-    onDeselectOne,
     onPageChange = () => {},
     onRowsPerPageChange,
-    onSelectAll,
-    onSelectOne,
     page = 0,
     rowsPerPage = 0,
     selected = [],
@@ -41,19 +37,6 @@ export const ProjectsTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  />
-                </TableCell> */}
                 <TableCell>Project Name</TableCell>
                 <TableCell>Tech Stack Used</TableCell>
                 <TableCell>Date Created</TableCell>
@@ -83,7 +66,7 @@ export const ProjectsTable = (props) => {
                             ? "green"
                             : project.status === "In Progress"
                             ? "gray"
-                            : "red", // Color for the third status option
+                            : "red",
                       }}
                     >
                       {project.status}
@@ -102,7 +85,7 @@ export const ProjectsTable = (props) => {
         onRowsPerPageChange={onRowsPerPageChange}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={5}
       />
     </Card>
   );

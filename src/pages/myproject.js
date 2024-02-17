@@ -1,18 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
-import { subDays, subHours } from "date-fns";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
-import { Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { useSelection } from "src/hooks/use-selection";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ProjectsTable } from "src/sections/myproject/projects-table";
 import { ProjectsSearch } from "src/sections/myproject/projects-search";
 import { applyPagination } from "src/utils/apply-pagination";
-
-const now = new Date();
 
 const data = [
   {
@@ -82,22 +75,32 @@ const data = [
   // Add more projects as needed
 ];
 
-const useProjects = (page, rowsPerPage) => {
+const useProjects = (page, rowsPerPage, searchQuery) => {
+  // Filter projects based on the search query
+  const filteredProjects = useMemo(() => {
+    if (!searchQuery) return data;
+    return data.filter((project) =>
+      project.nameOfProject.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
+
+  // Apply pagination to filtered projects
   return useMemo(() => {
-    return applyPagination(data, page, rowsPerPage);
-  }, [page, rowsPerPage]);
+    return applyPagination(filteredProjects, page, rowsPerPage);
+  }, [filteredProjects, page, rowsPerPage]);
 };
 
 const useProjectIds = (projects) => {
   return useMemo(() => {
-    return projects.map((projects) => projects.id);
+    return projects.map((project) => project.id);
   }, [projects]);
 };
 
 const Page = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const projects = useProjects(page, rowsPerPage);
+  const [searchQuery, setSearchQuery] = useState("");
+  const projects = useProjects(page, rowsPerPage, searchQuery);
   const projectIds = useProjectIds(projects);
   const projectSelection = useSelection(projectIds);
 
@@ -108,6 +111,20 @@ const Page = () => {
   const handleRowsPerPageChange = useCallback((event) => {
     setRowsPerPage(event.target.value);
   }, []);
+
+  const handleSearchInputChange = useCallback((event) => {
+    setSearchQuery(event.target.value);
+  }, []);
+
+  const handleSearchKeyPress = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        // Trigger filtering when Enter key is pressed
+        setPage(0);
+      }
+    },
+    [setPage]
+  );
 
   return (
     <>
@@ -127,20 +144,12 @@ const Page = () => {
               <Stack spacing={1}>
                 <Typography variant="h4">My Projects</Typography>
               </Stack>
-              <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                >
-                  Add
-                </Button>
-              </div>
             </Stack>
-            <ProjectsSearch />
+            <ProjectsSearch
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              onKeyPress={handleSearchKeyPress}
+            />
             <ProjectsTable
               count={data.length}
               items={projects}
