@@ -27,15 +27,15 @@ export const items = [
       </SvgIcon>
     ),
   },
-  // {
-  //   title: 'Companies',
-  //   path: '/companies',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <ShoppingBagIcon />
-  //     </SvgIcon>
-  //   )
-  // }, 
+  {
+    title: 'My Projects',
+    path: '/myprojects',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    )
+  }, 
   {
     title: 'BlogPosts',
     path: '/blogposts',
