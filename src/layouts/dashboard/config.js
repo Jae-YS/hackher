@@ -29,7 +29,7 @@ export const items = [
   },
   {
     title: 'My Projects',
-    path: '/myprojects',
+    path: '/myproject',
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
