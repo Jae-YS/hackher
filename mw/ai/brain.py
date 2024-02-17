@@ -49,9 +49,10 @@ def generate_stack(input: str, level:str):
     llm = Bedrock(
         model_id=modelId,
         client=bedrock,
-        model_kwargs={"max_tokens_to_sample": 1000, "temperature": 0.4}
+        model_kwargs={"max_tokens_to_sample": 1000, "temperature": 0.5}
     )
-    conversation = ConversationChain(llm = llm, verbose=False)   
+    conversation = ConversationChain(llm = llm, verbose=False)
+    conversation.prompt = formatted   
     data = {}
     data['response'] = conversation.predict(input=input)
     return json.dumps(data)
