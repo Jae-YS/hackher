@@ -35,6 +35,15 @@ export const items = [
         <ShoppingBagIcon />
       </SvgIcon>
     )
+  }, 
+  {
+    title: 'BlogPosts',
+    path: '/blogposts',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    )
   },
   {
     title: 'Account',
