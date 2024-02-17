@@ -26,7 +26,7 @@ contentType = 'application/json'
 
 memory = ConversationBufferMemory(ai_prefix="Assistant")
 
-def respond(user_input):
+def respond(user_input: str):
     llm = Bedrock(
         model_id=modelId,
         client=bedrock,
@@ -37,9 +37,13 @@ def respond(user_input):
     conversation.prompt = gen_ideas_prompt1
     return (conversation.predict(input=user_input))
 
-# def respond_interests(user_input):
-#     llm = Bedrock(
-#         model_id=modelId,
-#         client=bedrock,
-#         model_kwargs={"max_tokens_to_sample": 500, "temperature": 0.5, "top_k": 250}
-#     )
+def generate_stack(level: str, project: str):
+    llm = Bedrock(
+        model_id=modelId,
+        client=bedrock,
+        model_kwargs={"max_tokens_to_sample": 1000, "temperature": 0.4, "top_k": 100, "top_p":100}
+    )
+    
+    conversation = ConversationChain(llm = llm, verbose=False)   
+    conversation.prompt = gen_ideas_prompt1
+    return (conversation.predict(project=project, level=level))

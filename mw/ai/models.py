@@ -1,3 +1,4 @@
 from django.db import models
+from brain import generate_stack
 
-# Create your models here.
+print(generate_stack())
