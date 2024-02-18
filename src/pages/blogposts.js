@@ -148,12 +148,10 @@ const Page = () => {
     // Clear the current blog post when the modal is closed
     if (viewPost) setCurrentBlogPost(null);
   };
-
   const handleSearchInputChange = useCallback((event) => {
     setSearchQuery(event.target.value);
     setPage(0); // Reset page to 0 when search query changes
   }, []);
-
   // Function to toggle the modal
   const handleToggleModal = () => {
     setAddItem(!addItem);
@@ -170,8 +168,8 @@ const Page = () => {
       postContentRef.current.value
     );
     const newPost = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
+      id: "asjfklsadjfl;adskjfl;asjfl;asjfdl;as",
+      createdAt: formattedDate,
       title: titleRef.current.value,
       description: descriptionRef.current.value,
       post: postContentRef.current.value,
