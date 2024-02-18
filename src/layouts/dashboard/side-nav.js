@@ -3,11 +3,9 @@ import { usePathname } from "next/navigation";
 import PropTypes from "prop-types";
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
   Typography,
   useMediaQuery,
 } from "@mui/material";

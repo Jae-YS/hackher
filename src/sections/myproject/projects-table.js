@@ -1,10 +1,8 @@
 import PropTypes from "prop-types";
 import Link from "next/link";
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
   Stack,
   Table,
   TableBody,
@@ -13,8 +11,6 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import { Scrollbar } from "src/components/scrollbar";
 
@@ -27,11 +23,8 @@ export const ProjectsTable = (props) => {
     page = 0,
     rowsPerPage = 0,
     selected = [],
-    // onUpdateStatus,
   } = props;
 
-  const selectedSome = selected.length > 0 && selected.length < items.length;
-  const selectedAll = items.length > 0 && selected.length === items.length;
 
   return (
     <Card>
@@ -75,14 +68,6 @@ export const ProjectsTable = (props) => {
                       }}
                     >
                       {project.status}
-                      {/* <Select
-                        value={project.status}
-                        onChange={(e) => onUpdateStatus(project.id, e.target.value)} // Call onUpdateStatus when status changes
-                      >
-                        <MenuItem value="Active">Active</MenuItem>
-                        <MenuItem value="In Progress">In Progress</MenuItem>
-                        <MenuItem value="Archived">Archived</MenuItem>
-                      </Select> */}
                     </TableCell>
                   </TableRow>
                 );
@@ -116,5 +101,4 @@ ProjectsTable.propTypes = {
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
   selected: PropTypes.array,
-  // onUpdateStatus: PropTypes.func,
 };

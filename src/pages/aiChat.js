@@ -6,11 +6,9 @@ import {
   Container,
   Stack,
   Typography,
-  Unstable_Grid2 as Grid,
   TextField,
   Modal,
   Button,
-  Paper,
 } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 const bot = "/assets/bot.svg";

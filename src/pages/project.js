@@ -2,7 +2,6 @@ import React from "react";
 import Head from "next/head";
 import { Box, Container, Grid } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-import { aiChat } from "./aiChat"
 import { ProjectDetails } from "../sections/myproject/project-detail"; // Your new component
 
 const ParentComponent = () => {

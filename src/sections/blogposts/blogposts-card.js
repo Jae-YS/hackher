@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
-import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from '@mui/material';
 
 export const BlogPostCard = ({blogpost, onClick}) => {
   // const { blogpost } = props;
@@ -24,10 +23,6 @@ export const BlogPostCard = ({blogpost, onClick}) => {
             pb: 3
           }}
         >
-          {/* <Avatar
-            src={blogpost.logo}
-            variant="square"
-          /> */}
         </Box>
         <Typography
           align="center"
