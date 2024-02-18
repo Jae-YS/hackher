@@ -1,6 +1,4 @@
 import Head from 'next/head';
-import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {
   Modal,
@@ -19,7 +17,7 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CompanyCard } from 'src/sections/companies/company-card';
 import { BlogPostCard } from 'src/sections/blogposts/blogposts-card'
 import { CompaniesSearch } from 'src/sections/companies/companies-search';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 
 const mockdata = [
@@ -102,6 +100,7 @@ const mockdata = [
     interactions: 519
   }
 ];
+
 const Page = () => {
   const [blogPosts, setBlogPosts] = useState(mockdata);
   const [addItem, setAddItem] = useState(false);
@@ -110,6 +109,16 @@ const Page = () => {
   const postContentRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [postsPerPage, setPostsPerPage] = useState(6); // State to manage posts per page
+  const [filteredBlogPosts, setFilteredBlogPosts] = useState(mockdata);
+  const [currentBlogPost, setCurrentBlogPost] = useState(null);
+  const [viewPost, setViewPost] = useState(false);
+
+
+  const handleToggleModalPost = () => {
+    setViewPost(!viewPost);
+    // Clear the current blog post when the modal is closed
+    if (viewPost) setCurrentBlogPost(null);
+  };
 
   // Function to toggle the modal
   const handleToggleModal = () => {
@@ -130,7 +139,6 @@ const Page = () => {
 
     setBlogPosts(currentPosts => [...currentPosts, newPost]);
     handleToggleModal(); // Close the modal after submission
-    // Optionally clear the form fields here
     titleRef.current.value = '';
     descriptionRef.current.value = '';
     postContentRef.current.value = '';
@@ -144,11 +152,31 @@ const Page = () => {
     setPostsPerPage(parseInt(event.target.value, 10));
   };
 
-  const pageCount = Math.ceil(blogPosts.length / postsPerPage);
+  useEffect(() => {
+    // Trim the search query and check if it's empty
+    const trimmedSearchQuery = searchQuery.trim();
+  
+    if (trimmedSearchQuery.length === 0) {
+      // If the search query is empty, display all posts
+      setFilteredBlogPosts(blogPosts);
+    } else {
+      // Split the non-empty search query into individual words (keywords)
+      const keywords = trimmedSearchQuery.toLowerCase().split(' ').filter(keyword => keyword !== '');
+  
+      // Filter blogPosts based on whether any of the keywords match the title of a post
+      const filtered = blogPosts.filter(blogpost =>
+        keywords.some(keyword => blogpost.title.toLowerCase().includes(keyword))
+      );
+  
+      setFilteredBlogPosts(filtered);
+    }
+  }, [blogPosts, searchQuery]);
+  
+  // const pageCount = Math.ceil(blogPosts.length / postsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const pageCount = Math.ceil(filteredBlogPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
-  const visiblePosts = blogPosts.slice(startIndex, startIndex + postsPerPage);
+  const visiblePosts = filteredBlogPosts.slice(startIndex, startIndex + postsPerPage);
 
   // Style for the modal
   const modalStyle = {
@@ -162,19 +190,19 @@ const Page = () => {
     boxShadow: 24,
     p: 4,
   };
-  
+
   return (
   <>
     <Head>
       <title>
-        BlogPosts | Devias Kit
+        BlogPosts | Grace
       </title>
     </Head>
     <Box
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8
+        pb: 8
       }}
     > 
       <Container maxWidth="xl">
@@ -216,14 +244,20 @@ const Page = () => {
             spacing={3}
           >
           {visiblePosts.map((blogpost) => (
-              <Grid
-                xs={12}
-                md={6}
-                lg={4}
-                key={blogpost.id}
-              >
-                <BlogPostCard blogpost={blogpost} />
-              </Grid>
+            <Grid
+              xs={12}
+              md={6}
+              lg={4}
+              key={blogpost.id}
+            >
+              <BlogPostCard 
+                blogpost={blogpost} 
+                onClick={() => {
+                  setCurrentBlogPost(blogpost);
+                  setViewPost(true);
+                }} 
+              />
+            </Grid>
           ))}
           </Grid>
           <Box
@@ -316,6 +350,43 @@ const Page = () => {
         </form>
       </Box>
     </Modal>
+
+    <Modal
+      open={viewPost}
+      onClose={handleToggleModalPost}
+      aria-labelledby="view-blogpost-title"
+      aria-describedby="view-blogpost-description"
+    >
+      <Box sx={modalStyle}>
+        {currentBlogPost ? (
+          <>
+            {/* Title with larger text */}
+            <Typography id="view-blogpost-title" variant="h4" component="h2" gutterBottom>
+              {currentBlogPost.title}
+            </Typography>
+            {/* Description with medium text */}
+            <Typography variant="h6" sx={{ mt: 2 }} gutterBottom>
+              {currentBlogPost.description}
+            </Typography>
+            {/* Actual post content with smaller text */}
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              {currentBlogPost.post}
+            </Typography>
+          </>
+        ) : (
+          <Typography variant="body1">
+            No blog post selected.
+          </Typography>
+        )}
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button variant="outlined" onClick={handleToggleModalPost}>
+            Close
+          </Button>
+        </Box>
+      </Box>
+    </Modal>
+
+
   </>
 );
 }
