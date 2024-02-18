@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { Scrollbar } from "src/components/scrollbar";
 import { getInitials } from "src/utils/get-initials";
+import { Project } from "../../pages/project"
 
 export const ProjectsTable = (props) => {
   const {
@@ -49,6 +50,7 @@ export const ProjectsTable = (props) => {
                 const isSelected = selected.includes(project.id);
 
                 return (
+                  
                   <TableRow hover key={project.id} selected={isSelected}>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>

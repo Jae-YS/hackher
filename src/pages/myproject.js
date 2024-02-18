@@ -19,6 +19,7 @@ const data = [
     dateCreated: "2023-01-15",
     dateLastModified: "2023-05-20",
     status: "In Progress",
+    description: "this is a project "
   },
   {
     id: "2",
@@ -27,6 +28,7 @@ const data = [
     dateCreated: "2023-02-28",
     dateLastModified: "2023-06-10",
     status: "Done",
+    description: "this is a project "
   },
   {
     id: "3",
@@ -35,6 +37,7 @@ const data = [
     dateCreated: "2023-03-10",
     dateLastModified: "2023-07-05",
     status: "Done",
+    description: "this is a project "
   },
   {
     id: "4",
@@ -43,6 +46,7 @@ const data = [
     dateCreated: "2023-04-05",
     dateLastModified: "2023-08-15",
     status: "In Progress",
+    description: "this is a project "
   },
   {
     id: "5",
@@ -51,6 +55,7 @@ const data = [
     dateCreated: "2023-05-20",
     dateLastModified: "2023-09-25",
     status: "Archived",
+    description: "this is a project "
   },
   {
     id: "6",
@@ -59,6 +64,7 @@ const data = [
     dateCreated: "2023-06-08",
     dateLastModified: "2023-10-12",
     status: "Done",
+    description: "this is a project "
   },
   {
     id: "7",
@@ -67,6 +73,7 @@ const data = [
     dateCreated: "2023-07-14",
     dateLastModified: "2023-11-30",
     status: "Archived",
+    description: "this is a project "
   },
   {
     id: "8",
@@ -75,6 +82,7 @@ const data = [
     dateCreated: "2023-08-30",
     dateLastModified: "2023-12-22",
     status: "In Progress",
+    description: "this is a project "
   },
   // Add more projects as needed
 ];
