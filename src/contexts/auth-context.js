@@ -80,7 +80,7 @@ export const AuthProvider = (props) => {
     if (isAuthenticated) {
       const user = {
         id: "5e86809283e28b96d2d38537",
-        avatar: "/assets/avatars/avatar-anika-visser.png",
+        avatar: "/assets/user.svg",
         name: "Steven Wu",
         email: "swu@vassar.edu",
       };
@@ -113,7 +113,7 @@ export const AuthProvider = (props) => {
 
     const user = {
       id: "5e86809283e28b96d2d38537",
-      avatar: "/assets/avatars/avatar-anika-visser.png",
+      avatar: "/assets/user.svg",
       name: "Steven Wu",
       email: "swu@vassar.edu",
     };
@@ -137,7 +137,7 @@ export const AuthProvider = (props) => {
 
     const user = {
       id: "5e86809283e28b96d2d38537",
-      avatar: "/assets/avatars/avatar-anika-visser.png",
+      avatar: "/assets/user.svg",
       name: "Steven Wu",
       email: "swu@vassar.edu",
     };
