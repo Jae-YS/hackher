@@ -1,6 +1,6 @@
 import boto3
 import json
-from prompts import respond_prompt, tech_stack_advisor
+from prompts import ideas_generator, tech_stack_advisor, boilerplate_writer
 from langchain.llms.bedrock import Bedrock
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
@@ -18,7 +18,8 @@ session = boto3.Session (
 	aws_session_token = aws_session_token
 )
 
-gen_ideas_prompt1 = PromptTemplate.from_template(respond_prompt)
+generate_ideas_prompt = PromptTemplate.from_template(ideas_generator)
+write_boilerplate_prompt = PromptTemplate.from_template(boilerplate_writer)
 
 
 bedrock = session.client('bedrock-runtime') 
@@ -29,7 +30,7 @@ contentType = 'application/json'
 
 memory = ConversationBufferMemory(ai_prefix="Assistant")
 
-def respond(user_input: str):
+def generate_ideas(user_input: str):
     llm = Bedrock(
         model_id=modelId,
         client=bedrock,
@@ -37,13 +38,28 @@ def respond(user_input: str):
     )
     
     conversation = ConversationChain(llm = llm, verbose=False, memory=memory)   
-    conversation.prompt = gen_ideas_prompt1
+    conversation.prompt = generate_ideas_prompt
     data = {}
     data['response'] = conversation.predict(input=user_input)
     return json.dumps(data)
 
 def generate_stack(input: str, level:str):
     formatted = tech_stack_advisor.format(level=level, input=input)
+    # print(formatted)
+    formatted = PromptTemplate.from_template(formatted)
+    llm = Bedrock(
+        model_id=modelId,
+        client=bedrock,
+        model_kwargs={"max_tokens_to_sample": 1000, "temperature": 0.5}
+    )
+    conversation = ConversationChain(llm = llm, verbose=False)
+    conversation.prompt = formatted   
+    data = {}
+    data['response'] = conversation.predict(input=input)
+    return json.dumps(data)
+
+def write_boilerplate(input: str, level: str, tech_stack: str):
+    formatted = boilerplate_writer.format(input=input, level=level, tech_stack=tech_stack)
     print(formatted)
     formatted = PromptTemplate.from_template(formatted)
     llm = Bedrock(
