@@ -37,10 +37,9 @@ export const SideNav = (props) => {
           alignItems: "center",
         }}
       >
-        {/* logo and name */}
         <Box
           component={NextLink}
-          href="/"
+          href="/myproject"
           sx={{
             display: "inline-flex",
             height: 32,
@@ -51,11 +50,13 @@ export const SideNav = (props) => {
           <Logo />
         </Box>
         <Typography
+          href="myproject"
           sx={{
             fontFamily: (theme) => theme.typography.fontFamily,
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: 600,
             lineHeight: "24px",
+            cursor: "pointer",
           }}
           variant="body1"
         >
