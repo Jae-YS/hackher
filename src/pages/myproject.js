@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import Link from "next/link";
 import {
   Box,
   Button,
@@ -21,10 +22,9 @@ import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ProjectsTable } from "src/sections/myproject/projects-table";
 import { ProjectsSearch } from "src/sections/myproject/projects-search";
 import { applyPagination } from "src/utils/apply-pagination";
-import { OverviewTotalProfit } from "../sections/overview/overview-total-profit";
 import { ProjectsTemplate } from "../sections/myproject/projects-templates";
 
-const data = [
+let data = [
   {
     id: "1",
     nameOfProject: "Project A",
@@ -130,27 +130,12 @@ const Page = () => {
   const projectIds = useProjectIds(projects);
   const projectSelection = useSelection(projectIds);
 
-  // // Function to handle status update
-  // const handleStatusUpdate = (projectId, newStatus) => {
-  //   // Find the index of the project with the specified projectId
-  //   const projectIndex = projects.findIndex((project) => project.id === projectId);
-
-  //   if (projectIndex !== -1) {
-  //     // Create a copy of the projects array
-  //     const updatedProjects = [...projects];
-
-  //     // Update the status of the project at the found index
-  //     updatedProjects[projectIndex] = {
-  //       ...updatedProjects[projectIndex],
-  //       status: newStatus,
-  //     };
-
-  //     // Update the projects data
-  //     setProjects(updatedProjects);
-  //   } else {
-  //     console.error(`Project with ID ${projectId} not found.`);
-  //   }
-  // };
+  const [buttonAdd, setButtonAdd] = useState(false);
+  const [projectTitle, setProjectTitle] = useState("Chess");
+  const [difficultyLevel, setDifficultyLevel] = useState();
+  const [frontEndFramework, setFrontEndFramework] = useState(); 
+  const [backEndFramework, setBackEndFramework] = useState();
+  const [projectDescription, setProjectDescription] = useState("This is an interactive chess game with a bot who controls the CPU's move");
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -174,8 +159,48 @@ const Page = () => {
     [setPage]
   );
 
-  const handleToggleModal = () => {
+  const handleToggleModal = async () => {
     setNewProject(!setNewProject);
+    event.preventDefault(); // Prevent default form submission behavior
+
+    const title = projectTitle.split(" ").concat(projectDescription.split(" "));
+    const concatenated_title = title.length > 1 ? title.join("+") : title[0];
+
+    const levels = difficultyLevel.trim();
+
+    const tech_stack = frontEndFramework.split(" ").concat(backEndFramework.split(" "));
+    const concatenated_tech = tech_stack.length > 1 ? tech_stack.join("+") : tech_stack[0];
+
+    const url = `http://127.0.0.1:8000/ai/gen_boilerplate/?input=${concatenated_title}/?level=${levels}/?tech_stack=${concatenated_tech}`
+
+    console.log(url);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok, status: ' + response.status);
+        const botData = await response.json();
+
+        const responseObject = JSON.parse(botData.response); // Parsing the JSON string within the response property
+
+
+  
+        const newProject = {
+          id: data.length > 0 ? data[data.length - 1].id + 1 : 1,
+          nameOfProject: projectTitle, // Assign based on context or fetched content
+          techStackUsed: frontEndFramework +  " " + backEndFramework, // Manually assigned based on the description provided
+          dateCreated: new Date().toISOString().slice(0, 10), // Use current date as creation date
+          dateLastModified: new Date().toISOString().slice(0, 10), // Use current date or modify based on your logic
+          status: "In Progress", // Assign based on context
+          description: responseObject.response // Using the detailed description from the fetched response
+        };
+
+        // Add the new project to the data array
+        data.push(newProject);
+        console.log(data);
+    } catch (error) {
+      console.error("Error fetching bot response:", error);
+      // Update the loading message to show the error
+    }
+
   };
 
   const modalStyle = {
@@ -201,7 +226,7 @@ const Page = () => {
   };
 
   return (
-    <>
+      <>
       <Head>
         <title>My Projects</title>
       </Head>
@@ -239,12 +264,15 @@ const Page = () => {
                   }
                   variant="contained"
                   style={{ height: "100%", width: "100%", maxWidth: "none", fontSize: "1.25rem" }} // Adjust width and height as needed
-                  onClick={() => setNewProject(true)}
+                  onClick={() => {setNewProject(true)
+                    setButtonAdd(true)
+                  }}
                 >
                   Add
                 </Button>
               </Grid>
-              <Grid xs={12} sm={6} lg={3}>
+              <Grid xs={12} sm={6} lg={3}
+              onClick={() => setButtonAdd(false)}>
                 <ProjectsTemplate
                   sx={{ height: "100%" }}
                   description="Simple"
@@ -257,7 +285,7 @@ const Page = () => {
                   }
                 />
               </Grid>
-              <Grid xs={12} sm={6} lg={3}>
+              <Grid xs={12} sm={6} lg={3} onClick={() => setButtonAdd(false)}>
                 <ProjectsTemplate
                   sx={{ height: "100%" }}
                   description="Exciting"
@@ -270,7 +298,7 @@ const Page = () => {
                   }
                 />
               </Grid>
-              <Grid xs={12} sm={6} lg={3}>
+              <Grid xs={12} sm={6} lg={3} onClick={() => setButtonAdd(false)}>
                 <ProjectsTemplate
                   sx={{ height: "100%" }}
                   description="Classic"
@@ -326,7 +354,8 @@ const Page = () => {
               label="Project Title"
               name="projectTitle"
               placeholder="Enter the project title"
-              value={prefillData.title}
+              value={buttonAdd ? projectTitle : prefillData.title}
+              onChange={(e) => setProjectTitle(e.target.value)}            
             />
             <FormControl fullWidth margin="normal">
               <InputLabel id="difficulty-level-label">Difficulty Level</InputLabel>
@@ -335,6 +364,8 @@ const Page = () => {
                 id="difficultyLevel"
                 label="Difficulty Level" // This prop ensures the label doesn't get covered
                 name="difficultyLevel"
+                value={difficultyLevel}
+                onChange={(e) => setDifficultyLevel(e.target.value)}
               >
                 <MenuItem value="beginner">Beginner</MenuItem>
                 <MenuItem value="intermediate">Intermediate</MenuItem>
@@ -348,6 +379,8 @@ const Page = () => {
                 id="frontEndFramework"
                 label="Front End Framework" // Ensures the label is visible
                 name="frontEndFramework"
+                value={frontEndFramework}
+                onChange={(e) => setFrontEndFramework(e.target.value)}
               >
                 <MenuItem value="react">React</MenuItem>
                 <MenuItem value="vue">Vue.js</MenuItem>
@@ -363,9 +396,11 @@ const Page = () => {
                 id="Back-end-framework"
                 label="Backend Framework" // Keeps the label visible after selection
                 name="Back End Framework"
+                value={backEndFramework}
+                onChange={(e) => setBackEndFramework(e.target.value)}
               >
-                <MenuItem value="nodejs">Node.js</MenuItem>
                 <MenuItem value="django">Django (Python)</MenuItem>
+                <MenuItem value="postgresql">PostgreSQL</MenuItem>
                 <MenuItem value="flask">Flask (Python)</MenuItem>
                 <MenuItem value="rubyonrails">Ruby on Rails</MenuItem>
                 <MenuItem value=".net">.NET (C#)</MenuItem>
@@ -381,20 +416,24 @@ const Page = () => {
               multiline
               rows={6} // Adjusted for shorter input
               placeholder="Provide a brief description of what you want your project to do."
-              value={prefillData.description}
+              value={buttonAdd ? projectDescription: prefillData.description }
+              onChange={(e) => setProjectDescription(e.target.value)}  
             />
             <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-              <Button variant="outlined" onClick={handleToggleModal}>
+              <Button variant="outlined" onClick={() => {setNewProject(!setNewProject);}}>
                 Cancel
               </Button>
+              <Link href={`/aiChat?id=${9}`} passHref>
               <Button variant="contained" onClick={handleToggleModal} sx={{ ml: 2 }}>
                 Submit
               </Button>
+              </Link>
             </Box>
           </form>
         </Box>
       </Modal>
-    </>
+      </>
+    
   );
 };
 
