@@ -123,6 +123,7 @@ const Page = () => {
     if (viewPost) setCurrentBlogPost(null);
   };
 
+
   // Function to toggle the modal
   const handleToggleModal = () => {
     setAddItem(!addItem);
@@ -269,6 +270,7 @@ const Page = () => {
                 }} 
               />
             </Grid>
+
           ))}
           </Grid>
           <Box
@@ -396,6 +398,7 @@ const Page = () => {
         </Box>
       </Box>
     </Modal>
+
 
 
   </>
