@@ -130,10 +130,18 @@ const Page = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    console.log("title: ", titleRef.current.value, " description: ", descriptionRef.current.value, " post: ", postContentRef.current.value);
+    const now = new Date(Date.now());
+    // Extract the day, month, and year from the Date object
+    const day = now.getDate().toString().padStart(2, '0'); // Pad with leading zero if necessary
+    const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get the correct month
+    const year = now.getFullYear();
+
+    // Concatenate the components in the desired format
+    const formattedDate = `${day}/${month}/${year}`;
+
     const newPost = {
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
+      id: "asjfklsadjfl;adskjfl;asjfl;asjfdl;as",
+      createdAt: formattedDate,
       title: titleRef.current.value,
       description: descriptionRef.current.value,
       post: postContentRef.current.value,
