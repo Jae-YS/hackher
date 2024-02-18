@@ -33,26 +33,6 @@ export const Layout = (props) => {
             position: "relative",
           }}
         >
-          {/* <Box
-            component="header"
-            sx={{
-              left: 0,
-              p: 3,
-              position: "fixed",
-              top: 0,
-              width: "100%",
-            }}
-          >
-            <Box
-              component={NextLink}
-              href="/"
-              sx={{
-                display: "inline-flex",
-                height: 32,
-                width: 32,
-              }}
-            ></Box>
-          </Box> */}
           {children}
         </Grid>
       </Grid>
