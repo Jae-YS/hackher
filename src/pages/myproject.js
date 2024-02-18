@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import { Box, Button, Container, Stack, SvgIcon, Typography, Unstable_Grid2 as Grid } from "@mui/material";
+import { Box, Button, Container, Stack, SvgIcon, Typography, Unstable_Grid2 as Grid, 
+  Modal, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import { useSelection } from "src/hooks/use-selection";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { ProjectsTable } from "src/sections/myproject/projects-table";
@@ -102,6 +103,7 @@ const useProjectIds = (projects) => {
 };
 
 const Page = () => {
+  const [newProject, setNewProject] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState("");
@@ -130,6 +132,22 @@ const Page = () => {
     },
     [setPage]
   );
+
+  const handleToggleModal = () => {
+    setNewProject(!setNewProject);
+  }
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   return (
     <>
@@ -174,6 +192,7 @@ const Page = () => {
                   }
                   variant="contained"
                   style={{ height: '100%', width: '100%', maxWidth: 'none', fontSize: '1.25rem'}} // Adjust width and height as needed
+                  onClick={() => setNewProject(true)}
                 >
                   Add
                 </Button>
@@ -230,6 +249,92 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+
+      <Modal
+        open={newProject}
+        onClose={handleToggleModal}
+        aria-labelledby="add-project-title"
+        aria-describedby="add-project-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="add-project-title" variant="h6" component="h2">
+            Create A Project
+          </Typography>
+          <form noValidate autoComplete="off">
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="projectTitle"
+              label="Project Title"
+              name="projectTitle"
+              placeholder="Enter the project title"
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="difficulty-level-label">Difficulty Level</InputLabel>
+              <Select
+                labelId="difficulty-level-label"
+                id="difficultyLevel"
+                label="Difficulty Level" // This prop ensures the label doesn't get covered
+                name="difficultyLevel"
+              >
+                <MenuItem value="beginner">Beginner</MenuItem>
+                <MenuItem value="intermediate">Intermediate</MenuItem>
+                <MenuItem value="advanced">Advanced</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="front-end-framework-label">Front End Framework</InputLabel>
+              <Select
+                labelId="front-end-framework-label"
+                id="frontEndFramework"
+                label="Front End Framework" // Ensures the label is visible
+                name="frontEndFramework"
+              >
+                <MenuItem value="react">React</MenuItem>
+                <MenuItem value="vue">Vue.js</MenuItem>
+                <MenuItem value="angular">Angular</MenuItem>
+                <MenuItem value="svelte">Svelte</MenuItem>
+                <MenuItem value="nextjs">Next.js</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="back-end-framework-label">Back End Framework</InputLabel>
+              <Select
+                labelId="back-end-framework-label"
+                id="Back-end-framework"
+                label="Backend Framework" // Keeps the label visible after selection
+                name="Back End Framework"
+              >
+                <MenuItem value="nodejs">Node.js</MenuItem>
+                <MenuItem value="django">Django (Python)</MenuItem>
+                <MenuItem value="flask">Flask (Python)</MenuItem>
+                <MenuItem value="rubyonrails">Ruby on Rails</MenuItem>
+                <MenuItem value=".net">.NET (C#)</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="project description"
+              label="Project Description"
+              name="description"
+              multiline
+              rows={4} // Adjusted for shorter input
+              placeholder="Provide a brief description of what you want your project to do."
+            />
+            <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+              <Button variant="outlined" onClick={handleToggleModal}>
+                Cancel
+              </Button>
+              <Button variant="contained" onClick={handleToggleModal} sx={{ ml: 2 }}>
+                Submit
+              </Button>
+            </Box>
+          </form>
+        </Box>
+      </Modal>
     </>
   );
 };
