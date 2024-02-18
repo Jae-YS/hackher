@@ -1,14 +1,7 @@
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import PropTypes from "prop-types";
-import {
-  Box,
-  Divider,
-  Drawer,
-  Stack,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Divider, Drawer, Stack, Typography, useMediaQuery } from "@mui/material";
 import { Logo } from "src/components/logo";
 import { items } from "./config";
 import { SideNavItem } from "./side-nav-item";
@@ -42,7 +35,7 @@ export const SideNav = (props) => {
             display: "inline-flex",
             height: 32,
             width: 32,
-            marginRight: "4px",
+            marginRight: "6px",
           }}
         >
           <Logo />
@@ -51,7 +44,7 @@ export const SideNav = (props) => {
           href="myproject"
           sx={{
             fontFamily: (theme) => theme.typography.fontFamily,
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: 600,
             lineHeight: "24px",
             cursor: "pointer",
