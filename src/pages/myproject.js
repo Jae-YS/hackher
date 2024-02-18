@@ -9,9 +9,7 @@ import { ProjectsTable } from "src/sections/myproject/projects-table";
 import { ProjectsSearch } from "src/sections/myproject/projects-search";
 import { applyPagination } from "src/utils/apply-pagination";
 import { OverviewTotalProfit } from '../sections/overview/overview-total-profit';
-
-
-const now = new Date();
+import { ProjectsTemplate } from '../sections/myproject/projects-templates'
 
 const data = [
   {
@@ -149,6 +147,16 @@ const Page = () => {
     p: 4,
   };
 
+  const [prefillData, setPrefillData] = useState({
+    title: '',
+    description: '',
+  });
+
+  const handleOpenModalWithPrefill = (title, description) => {
+    setPrefillData({ title, description });
+    setNewProject(true); // Assuming setNewProject controls the modal's visibility
+  };
+
   return (
     <>
       <Head>
@@ -202,9 +210,24 @@ const Page = () => {
                 sm={6}
                 lg={3}
               >
-                <OverviewTotalProfit
+                <ProjectsTemplate
                   sx={{ height: '100%' }}
-                  value="$15k"
+                  description="Simple"
+                  title="TikTakToe"
+                  onClick={() => handleOpenModalWithPrefill('TikTakToe', "AI Coding Assistant, I plan to develop a Tic-Tac-Toe game that offers both a local two-player mode and a challenging single-player mode against an AI. The game should automatically check for win conditions or a draw and display the outcome. The AI should use simple strategy logic to make its moves, making the game engaging for the player. The design should also accommodate an intuitive interface for players to start new games and choose their mode of play. Can you outline the essential features and functions needed to create this game, ensuring a smooth and user-friendly experience?")}
+                />
+
+              </Grid>
+              <Grid
+                xs={12}
+                sm={6}
+                lg={3}
+              >
+                <ProjectsTemplate
+                  sx={{ height: '100%' }}
+                  description="Exciting"
+                  title="Checkers"
+                  onClick={() => handleOpenModalWithPrefill('Checkers', "AI Coding Assistant, I'm interested in creating a checkers game that supports online multiplayer gameplay as well as a single-player mode against an AI. The game should include functionality to determine legal moves for checkers pieces, including regular moves and jump moves. It should also feature an AI opponent with basic strategic decision-making abilities. Additionally, the game needs to manage game sessions for online players, allowing them to join and leave games. Please provide an outline of the main components and logic required to build these functionalities, focusing on the player interaction and game state management.")}
                 />
               </Grid>
               <Grid
@@ -212,19 +235,11 @@ const Page = () => {
                 sm={6}
                 lg={3}
               >
-                <OverviewTotalProfit
+                <ProjectsTemplate
                   sx={{ height: '100%' }}
-                  value="$15k"
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                sm={6}
-                lg={3}
-              >
-                <OverviewTotalProfit
-                  sx={{ height: '100%' }}
-                  value="$15k"
+                  description="Classic"
+                  title="Chess"
+                  onClick={() => handleOpenModalWithPrefill('Chess', "AI Coding Assistant, I am looking to develop a chess game that includes both an AI opponent and the ability for two players to compete online. Key features should include a function to check the legality of moves based on chess rules, an AI algorithm capable of deciding on moves based on the current board state, and online multiplayer capability that allows players to join a game session and make moves in real-time. The game should also track and display game history. Please generate a conceptual design and outline the core functions needed to implement these features, considering user experience and game flow.")}
                 />
               </Grid>
             </Grid>
@@ -269,6 +284,7 @@ const Page = () => {
               label="Project Title"
               name="projectTitle"
               placeholder="Enter the project title"
+              value={prefillData.title}
             />
             <FormControl fullWidth margin="normal">
               <InputLabel id="difficulty-level-label">Difficulty Level</InputLabel>
@@ -321,8 +337,9 @@ const Page = () => {
               label="Project Description"
               name="description"
               multiline
-              rows={4} // Adjusted for shorter input
+              rows={6} // Adjusted for shorter input
               placeholder="Provide a brief description of what you want your project to do."
+              value={prefillData.description}
             />
             <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
               <Button variant="outlined" onClick={handleToggleModal}>
