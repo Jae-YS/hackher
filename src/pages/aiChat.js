@@ -308,9 +308,7 @@ const Chat = () => {
                   </Typography>
                 </Typography>
               </>
-            ) : (
-              <Typography variant="body1">No project selected.</Typography>
-            )}
+            ) : null}
             <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
               <Button variant="outlined" onClick={handleToggleModalPost}>
                 Close
