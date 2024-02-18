@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import Link from "next/link";
 import {
   Avatar,
   Box,
@@ -12,10 +13,10 @@ import {
   TablePagination,
   TableRow,
   Typography,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Scrollbar } from "src/components/scrollbar";
-import { getInitials } from "src/utils/get-initials";
-import { Project } from "../../pages/project"
 
 export const ProjectsTable = (props) => {
   const {
@@ -26,6 +27,7 @@ export const ProjectsTable = (props) => {
     page = 0,
     rowsPerPage = 0,
     selected = [],
+    // onUpdateStatus,
   } = props;
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
@@ -50,12 +52,13 @@ export const ProjectsTable = (props) => {
                 const isSelected = selected.includes(project.id);
 
                 return (
-                  
                   <TableRow hover key={project.id} selected={isSelected}>
                     <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">{project.nameOfProject}</Typography>
-                      </Stack>
+                      <Link href={`/aiChat?id=${project.id}`} passHref>
+                        <Stack alignItems="center" direction="row" spacing={2}>
+                          <Typography variant="subtitle2">{project.nameOfProject}</Typography>
+                        </Stack>
+                      </Link>
                     </TableCell>
                     <TableCell>{project.techStackUsed}</TableCell>
                     <TableCell>{project.dateCreated}</TableCell>
@@ -72,6 +75,14 @@ export const ProjectsTable = (props) => {
                       }}
                     >
                       {project.status}
+                      {/* <Select
+                        value={project.status}
+                        onChange={(e) => onUpdateStatus(project.id, e.target.value)} // Call onUpdateStatus when status changes
+                      >
+                        <MenuItem value="Active">Active</MenuItem>
+                        <MenuItem value="In Progress">In Progress</MenuItem>
+                        <MenuItem value="Archived">Archived</MenuItem>
+                      </Select> */}
                     </TableCell>
                   </TableRow>
                 );
@@ -105,4 +116,5 @@ ProjectsTable.propTypes = {
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
   selected: PropTypes.array,
+  // onUpdateStatus: PropTypes.func,
 };
