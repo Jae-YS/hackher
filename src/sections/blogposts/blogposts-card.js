@@ -3,8 +3,8 @@ import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import ClockIcon from "@heroicons/react/24/solid/ClockIcon";
 import { Box, Card, CardContent, Divider, Stack, SvgIcon, Typography } from "@mui/material";
 
-export const BlogPostCard = (props) => {
-  const { blogpost } = props;
+export const BlogPostCard = ({blogpost, onClick}) => {
+  // const { blogpost } = props;
 
   return (
     <Card
@@ -13,6 +13,7 @@ export const BlogPostCard = (props) => {
         flexDirection: "column",
         height: "100%",
       }}
+      onClick={onClick} // Use onClick here
     >
       <CardContent>
         <Typography align="center" gutterBottom variant="h5">
